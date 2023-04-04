@@ -10,9 +10,7 @@ def suggest_alt_text(image_url):
     headers = {'Ocp-Apim-Subscription-Key': subscription_key}
     params = {'visualFeatures': 'Description'}
     data = {'url': image_url}
-    print(endpoint)
     response = requests.post(endpoint, headers=headers, params=params, json=data)
-    print(response.text)
     response_data = json.loads(response.text)
     suggested_alt_text = response_data['description']['captions'][0]['text']
     return suggested_alt_text
@@ -24,7 +22,6 @@ def update_markdown_file(file_path):
         for match in matches:
             alt_text = match[0]
             image_url = match[1]
-            print(f"Found image with alt text: {alt_text} and url: {image_url}")
             if not alt_text:
                 suggested_alt_text = suggest_alt_text(image_url)
                 content = content.replace(f"![]({image_url})", f"![{suggested_alt_text}]({image_url})")
@@ -40,7 +37,9 @@ if __name__ == '__main__':
         if filename.endswith('.md'):
             update_markdown_file(filename)
             os.system(f"git add {filename}")
-    os.system('git config --global user.email "<YOUR_GITHUB_EMAIL>"')
-    os.system('git config --global user.name "<YOUR_GITHUB_USERNAME>"')
+    github_username = os.environ['GITHUB_ACTOR']
+    os.system(f'git config --global user.email "{github_username}@users.noreply.github.com"')
+    os.system(f'git config --global user.name "{github_username}"')
     os.system('git commit -m "Suggest alt text for inline images"')
-    os.system(f"git push {clone_url} {branch}")
+    token = os.environ['GITHUB_TOKEN']
+    os.system(f"git push {clone_url.replace('https://',f'https://{github_username}:{token}@')} {branch}")
