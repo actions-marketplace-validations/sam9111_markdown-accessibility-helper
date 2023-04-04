@@ -14,10 +14,13 @@ jobs:
       - name: Install Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.8
+          python-version: '3.x'
 
       - name: Install dependencies
         run: pip install requests
 
       - name: Suggest Alt Text
+        env: 
+          AZURE_SUBSCRIPTION_KEY: ${{ secrets.AZURE_SUBSCRIPTION_KEY }}
+          AZURE_ENDPOINT: ${{ secrets.AZURE_ENDPOINT }}
         run: python suggest-alt-text.py ${{ github.event.pull_request.head.repo.clone_url }} ${{ github.event.pull_request.head.ref }}
