@@ -13,16 +13,15 @@ jobs:
 
       - name: Install Python
         uses: actions/setup-python@v2
-        with:
-          python-version: '3.x'
 
       - name: Install dependencies
         run: pip install requests
 
       - name: Suggest Alt Text
         env: 
+          BRANCH_NAME: ${{ github.event.pull_request.head.ref }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_ACTOR: ${{ github.actor }}
           AZURE_SUBSCRIPTION_KEY: ${{ secrets.AZURE_SUBSCRIPTION_KEY }}
           AZURE_ENDPOINT: ${{ secrets.AZURE_ENDPOINT }}
-        run: python suggest-alt-text.py ${{ github.event.pull_request.head.repo.clone_url }} ${{ github.event.pull_request.head.ref }}
+        run: python suggest-alt-text.py ${{ github.event.pull_request.head.repo.clone_url }} $BRANCH_NAME
