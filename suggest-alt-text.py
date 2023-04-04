@@ -11,6 +11,7 @@ def suggest_alt_text(image_url):
     params = {'visualFeatures': 'Description'}
     data = {'url': image_url}
     response = requests.post(endpoint, headers=headers, params=params, json=data)
+    print("Response: response.text")
     response_data = json.loads(response.text)
     suggested_alt_text = response_data['description']['captions'][0]['text']
     return suggested_alt_text
