@@ -2,7 +2,7 @@ name: Suggest Alt Text
 
 on:
   pull_request:
-    types: [opened, edited]
+    types: [opened, synchronize]
 
 jobs:
   suggest_alt_text:
