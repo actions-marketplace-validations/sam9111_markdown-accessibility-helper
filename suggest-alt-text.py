@@ -10,6 +10,7 @@ def suggest_alt_text(image_url):
     headers = {'Ocp-Apim-Subscription-Key': subscription_key}
     params = {'visualFeatures': 'Description'}
     data = {'url': image_url}
+    print(endpoint)
     response = requests.post(endpoint, headers=headers, params=params, json=data)
     print(response.text)
     response_data = json.loads(response.text)
