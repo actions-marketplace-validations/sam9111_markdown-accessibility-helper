@@ -30,7 +30,7 @@ def update_markdown_file(file_path):
 
 if __name__ == '__main__':
     clone_url = sys.argv[1]
-    print(clone_url)
+    print(os.environ['GITHUB_ACTOR'])
     branch = sys.argv[2]
     os.system(f"git clone --depth=1 --branch={branch} {clone_url} repo")
     os.chdir('repo')
