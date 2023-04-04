@@ -1,0 +1,23 @@
+name: Suggest Alt Text
+
+on:
+  pull_request:
+    types: [opened, edited]
+
+jobs:
+  suggest_alt_text:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Suggest Alt Text
+        run: python suggest_alt_text.py ${{ github.event.pull_request.head.repo.clone_url }} ${{ github.event.pull_request.head.ref }}
