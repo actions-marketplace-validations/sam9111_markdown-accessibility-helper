@@ -24,6 +24,7 @@ def update_markdown_file(file_path):
         for match in matches:
             alt_text = match[0]
             image_url = match[1]
+            print("test")
             print(f"Found image with alt text: {alt_text} and url: {image_url}")
             if not alt_text:
                 suggested_alt_text = suggest_alt_text(image_url)
