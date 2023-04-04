@@ -25,4 +25,4 @@ jobs:
           GITHUB_ACTOR: ${{ github.actor }}
           AZURE_SUBSCRIPTION_KEY: ${{ secrets.AZURE_SUBSCRIPTION_KEY }}
           AZURE_ENDPOINT: ${{ secrets.AZURE_ENDPOINT }}
-        run: python suggest-alt-text.py git@github.com:${{ github.repository }}.git ${{ github.event.pull_request.head.ref }}
+        run: python suggest-alt-text.py ${{ github.event.pull_request.head.repo.clone_url }} ${{ github.event.pull_request.head.ref }}
