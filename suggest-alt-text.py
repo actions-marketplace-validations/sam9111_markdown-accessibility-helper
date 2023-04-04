@@ -38,7 +38,7 @@ if __name__ == '__main__':
         if filename.endswith('.md'):
             update_markdown_file(filename)
             os.system(f"git add {filename}")
-    os.system('git config --global user.email "<YOUR_GITHUB_EMAIL>"')
-    os.system('git config --global user.name "<YOUR_GITHUB_USERNAME>"')
+    os.system('git config --global user.email "{}@users.noreply.github.com"'.format(os.environ['GITHUB_ACTOR']))
+    os.system('git config --global user.name "{}"'.format(os.environ['GITHUB_ACTOR']))
     os.system('git commit -m "Suggest alt text for inline images"')
     os.system(f"git push {clone_url} {branch}")
