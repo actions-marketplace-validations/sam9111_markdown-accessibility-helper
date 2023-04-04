@@ -21,6 +21,7 @@ jobs:
 
       - name: Suggest Alt Text
         env: 
+          GITHUB_ACTOR: ${{ github.actor }}
           AZURE_SUBSCRIPTION_KEY: ${{ secrets.AZURE_SUBSCRIPTION_KEY }}
           AZURE_ENDPOINT: ${{ secrets.AZURE_ENDPOINT }}
         run: python suggest-alt-text.py git@github.com:${{ github.repository }}.git ${{ github.event.pull_request.head.ref }}

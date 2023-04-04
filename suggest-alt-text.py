@@ -30,6 +30,7 @@ def update_markdown_file(file_path):
 
 if __name__ == '__main__':
     clone_url = sys.argv[1]
+    print(os.environ['GITHUB_ACTOR'])
     branch = sys.argv[2]
     os.system(f"git clone --depth=1 --branch={branch} {clone_url} repo")
     os.chdir('repo')
@@ -37,5 +38,8 @@ if __name__ == '__main__':
         if filename.endswith('.md'):
             update_markdown_file(filename)
             os.system(f"git add {filename}")
+    github_username = os.environ['GITHUB_ACTOR']
+    os.system(f'git config --global user.email "{github_username}@users.noreply.github.com"')
+    os.system(f'git config --global user.name "{github_username}"')
     os.system('git commit -m "Suggest alt text for inline images"')
     os.system(f"git push {clone_url} {branch}")
