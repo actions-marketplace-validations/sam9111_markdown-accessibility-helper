@@ -2,6 +2,7 @@ import os
 import re
 import requests
 import json
+import sys
 
 def suggest_alt_text(image_url):
     subscription_key = os.environ['AZURE_SUBSCRIPTION_KEY']
