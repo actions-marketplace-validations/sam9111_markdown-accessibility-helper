@@ -2,7 +2,7 @@ import os
 import re
 import requests
 import json
-
+import sys
 
 def suggest_alt_text(image_url,language='en'):
     subscription_key = os.environ.get('AZURE_SUBSCRIPTION_KEY')
@@ -31,10 +31,8 @@ def update_markdown_file(file_path):
         f.write(content)
 
 if __name__ == '__main__':
-    clone_url = os.environ.get('CLONE_URL')
-    branch = os.environ.get('BRANCH_NAME')
-    print(f"Cloning {clone_url} into repo")
-    print(f"Branch: {branch}")
+    clone_url = sys.argv[1]
+    branch = sys.argv[2]
     os.system(f"git clone --depth=1 --branch={branch} {clone_url} repo")
     os.chdir('repo')
     for filename in os.listdir('.'):

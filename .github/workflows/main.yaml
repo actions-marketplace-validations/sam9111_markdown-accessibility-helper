@@ -31,7 +31,4 @@ jobs:
           AZURE_SUBSCRIPTION_KEY: ${{ secrets.AZURE_SUBSCRIPTION_KEY }}
           AZURE_ENDPOINT: ${{ secrets.AZURE_ENDPOINT }}
           ALT_LANGUAGE: ${{ vars.ALT_LANGUAGE }}
-        run: |
-          echo "Clone URL: $CLONE_URL"
-          echo "Branch Name: $BRANCH_NAME"
-          python suggest_alt_text.py
+        run: python suggest_alt_text. $CLONE_URL $BRANCH_NAME
