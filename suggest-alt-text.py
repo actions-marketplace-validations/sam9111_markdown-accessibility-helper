@@ -3,6 +3,7 @@ import re
 import requests
 import json
 
+
 def suggest_alt_text(image_url,language='en'):
     subscription_key = os.environ.get('AZURE_SUBSCRIPTION_KEY')
     endpoint = os.environ.get('AZURE_ENDPOINT')+ 'vision/v3.2/describe'
@@ -30,19 +31,19 @@ def update_markdown_file(file_path):
         f.write(content)
 
 if __name__ == '__main__':
-    clone_url = os.environ['CLONE_URL']
-    branch = os.environ['BRANCH_NAME']
+    clone_url = os.environ.get('CLONE_URL')
+    branch = os.environ.get('BRANCH_NAME')
     print(f"Cloning {clone_url} into repo")
     print(f"Branch: {branch}")
     os.system(f"git clone --depth=1 --branch={branch} {clone_url} repo")
-    
+    os.chdir('repo')
     for filename in os.listdir('.'):
         if filename.endswith('.md'):
             update_markdown_file(filename)
             os.system(f"git add {filename}")
-    github_username = os.environ['GITHUB_ACTOR']
+    github_username = os.environ.get('GITHUB_ACTOR')
     os.system(f'git config --global user.email "{github_username}@users.noreply.github.com"')
     os.system(f'git config --global user.name "{github_username}"')
     os.system('git commit -m "Suggest alt text for inline images"')
-    token = os.environ['GITHUB_TOKEN']
+    token = os.environ.get('GITHUB_TOKEN')
     os.system(f"git push {clone_url.replace('https://',f'https://{github_username}:{token}@')} {branch}")
