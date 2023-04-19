@@ -30,7 +30,7 @@ def update_markdown_file(file_path,language):
 if __name__ == '__main__':
     repo=os.environ['GITHUB_REPOSITORY']
     repo_name = repo.split('/')[1]
-    language = os.environ[f'{repo_name}_ALT_LANGUAGE']
+    language = os.environ['ALT_LANGUAGE']
     clone_url = f'https://github.com/{repo}.git'
     branch = 'main'
     os.system(f"git clone --depth=1 --branch={branch} {clone_url} repo")
