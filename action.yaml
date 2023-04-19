@@ -1,6 +1,7 @@
 name: Markdown Accessibility Helper
 description: Suggests alt text for images in markdown files
-
+icon: image
+color: purple
 # action runs when a pull request is opened or updated or when a push is made to the main branch
 on:
   pull_request:
