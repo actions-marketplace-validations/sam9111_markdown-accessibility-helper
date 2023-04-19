@@ -14,7 +14,7 @@ def suggest_alt_text(image_url,language='en'):
     suggested_alt_text = response_data['description']['captions'][0]['text']
     return suggested_alt_text
 
-def update_markdown_file(file_path):
+def update_markdown_file(file_path,language):
     with open(file_path, 'r') as f:
         content = f.read()
         matches = re.findall(r'\!\[(.*?)\]\((.*?)\)(?!\(|\w)', content)
@@ -22,21 +22,23 @@ def update_markdown_file(file_path):
             alt_text = match[0]
             image_url = match[1]
             if not alt_text:
-                repo_name = os.environ['GITHUB_REPOSITORY'].split('/')[1]
-                language = os.environ[f'{repo_name}_ALT_LANGUAGE']
                 suggested_alt_text = suggest_alt_text(image_url,language)
                 content = content.replace(f"![]({image_url})", f"![{suggested_alt_text}]({image_url})")
     with open(file_path, 'w') as f:
         f.write(content)
 
 if __name__ == '__main__':
-    clone_url = os.environ.get('GITHUB_REPOSITORY_URL')
-    branch = os.environ.get('GITHUB_HEAD_REF')
+    repo=os.environ['GITHUB_REPOSITORY']
+    repo_name = repo.split('/')[1]
+    language = os.environ[f'{repo_name}_ALT_LANGUAGE']
+    clone_url = f'https://github.com/{repo}.git'
+    branch = 'main'
     os.system(f"git clone --depth=1 --branch={branch} {clone_url} repo")
     os.chdir('repo')
+
     for filename in os.listdir('.'):
         if filename.endswith('.md'):
-            update_markdown_file(filename)
+            update_markdown_file(filename,language)
             os.system(f"git add {filename}")
     github_username = os.environ.get('GITHUB_ACTOR')
     os.system(f'git config --global user.email "{github_username}@users.noreply.github.com"')
