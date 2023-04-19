@@ -1,4 +1,4 @@
-name: Suggest Alt Text
+name: Markdown Accessibility Helper
 
 on:
   pull_request:

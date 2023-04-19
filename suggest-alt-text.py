@@ -4,6 +4,7 @@ import requests
 import json
 import sys
 
+
 def suggest_alt_text(image_url):
     subscription_key = os.environ.get('AZURE_SUBSCRIPTION_KEY')
     endpoint = os.environ.get('AZURE_ENDPOINT')
