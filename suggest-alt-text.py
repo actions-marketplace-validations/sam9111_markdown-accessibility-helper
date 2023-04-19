@@ -32,6 +32,8 @@ def update_markdown_file(file_path):
 if __name__ == '__main__':
     clone_url = os.environ['CLONE_URL']
     branch = os.environ['BRANCH_NAME']
+    print(f"Cloning {clone_url} into repo")
+    print(f"Branch: {branch}")
     os.system(f"git clone --depth=1 --branch={branch} {clone_url} repo")
     os.chdir('repo')
     for filename in os.listdir('.'):
