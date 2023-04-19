@@ -15,6 +15,28 @@ on:
     paths:
       - '**/*.md'
 
+inputs:
+  clone_url:
+    description: The clone URL of the repository
+    required: true
+  branch:
+    description: The branch of the repository
+    required: true
+  github_actor:
+    description: The GitHub actor
+    required: true
+  github_token:
+    description: The GitHub token
+    required: true
+  azure_subscription_key:
+    description: The Azure subscription key
+    required: true
+  azure_endpoint:
+    description: The Azure endpoint
+    required: true
+  alt_language:
+    description: The language to use for the alt text
+    required: false
 jobs:
   suggest_alt_text:
     runs-on: ubuntu-latest
@@ -30,16 +52,16 @@ jobs:
 
       - name: Suggest Alt Text
         env: 
-          CLONE_URL: ${{ github.event.pull_request.head.repo.clone_url }}
-          BRANCH: ${{ github.event.pull_request.head.ref }}
-          GITHUB_ACTOR: ${{ github.actor }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CLONE_URL: ${{ inputs.clone_url }}
+          BRANCH: ${{ inputs.branch }}
+          GITHUB_ACTOR: ${{ inputs.github_actor }}
+          GITHUB_TOKEN: ${{ inputs.github_token }}
 
           # these are the repository secrets you need to set in your repo
-          AZURE_SUBSCRIPTION_KEY: ${{ secrets.AZURE_SUBSCRIPTION_KEY }}
-          AZURE_ENDPOINT: ${{ secrets.AZURE_ENDPOINT }}
+          AZURE_SUBSCRIPTION_KEY: ${{inputs.azure_subscription_key}}}
+          AZURE_ENDPOINT: ${{inputs.azure_endpoint}}
           # this is the language you want to use for the alt text and is optional
           # if not set, the default is English
           # Set it as a repository variable
-          ALT_LANGUAGE: ${{ vars.ALT_LANGUAGE }}
+          ALT_LANGUAGE: ${{inputs.alt_language}}
         run: python suggest_alt_text.py
