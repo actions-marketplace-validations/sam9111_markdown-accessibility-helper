@@ -7,7 +7,7 @@ import sys
 
 def suggest_alt_text(image_url):
     subscription_key = os.environ.get('AZURE_SUBSCRIPTION_KEY')
-    endpoint = os.environ.get('AZURE_ENDPOINT')+ '/vision/v3.2/describe'
+    endpoint = os.environ.get('AZURE_ENDPOINT')+ 'vision/v3.2/describe'
     headers = {'Ocp-Apim-Subscription-Key': subscription_key}
     data = {'url': image_url}
     response = requests.post(endpoint, headers=headers, params={}, json=data)
