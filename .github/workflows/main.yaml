@@ -6,6 +6,8 @@ on:
       - '**/*.md'
     types: [opened, synchronize]
   push:
+    branches:
+      - main
     paths:
       - '**/*.md'
 
