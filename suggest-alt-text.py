@@ -35,7 +35,7 @@ if __name__ == '__main__':
     print(f"Cloning {clone_url} into repo")
     print(f"Branch: {branch}")
     os.system(f"git clone --depth=1 --branch={branch} {clone_url} repo")
-    os.chdir('repo')
+    
     for filename in os.listdir('.'):
         if filename.endswith('.md'):
             update_markdown_file(filename)
