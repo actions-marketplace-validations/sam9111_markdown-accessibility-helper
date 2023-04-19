@@ -5,6 +5,9 @@ on:
     paths:
       - '**/*.md'
     types: [opened, synchronize]
+  push:
+    paths:
+      - '**/*.md'
 
 jobs:
   suggest_alt_text:
@@ -21,9 +24,11 @@ jobs:
 
       - name: Suggest Alt Text
         env: 
+          CLONE_URL: ${{ github.event.pull_request.head.repo.clone_url }}
           BRANCH_NAME: ${{ github.event.pull_request.head.ref }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           AZURE_SUBSCRIPTION_KEY: ${{ secrets.AZURE_SUBSCRIPTION_KEY }}
           AZURE_ENDPOINT: ${{ secrets.AZURE_ENDPOINT }}
-        run: python suggest-alt-text.py ${{ github.event.pull_request.head.repo.clone_url }} $BRANCH_NAME
+          ALT_LANGUAGE: ${{ vars.ALT_LANGUAGE }}
+        run: python suggest-alt-text.py

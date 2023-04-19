@@ -2,15 +2,14 @@ import os
 import re
 import requests
 import json
-import sys
 
-
-def suggest_alt_text(image_url):
+def suggest_alt_text(image_url,language='en'):
     subscription_key = os.environ.get('AZURE_SUBSCRIPTION_KEY')
     endpoint = os.environ.get('AZURE_ENDPOINT')+ 'vision/v3.2/describe'
     headers = {'Ocp-Apim-Subscription-Key': subscription_key}
     data = {'url': image_url}
-    response = requests.post(endpoint, headers=headers, params={}, json=data)
+    params = {'language': language}
+    response = requests.post(endpoint, headers=headers, params=params, json=data)
     response_data = json.loads(response.text)
     suggested_alt_text = response_data['description']['captions'][0]['text']
     return suggested_alt_text
@@ -23,14 +22,16 @@ def update_markdown_file(file_path):
             alt_text = match[0]
             image_url = match[1]
             if not alt_text:
-                suggested_alt_text = suggest_alt_text(image_url)
+                repo_name = os.environ['GITHUB_REPOSITORY'].split('/')[1]
+                language = os.environ[f'{repo_name}_ALT_LANGUAGE']
+                suggested_alt_text = suggest_alt_text(image_url,language)
                 content = content.replace(f"![]({image_url})", f"![{suggested_alt_text}]({image_url})")
     with open(file_path, 'w') as f:
         f.write(content)
 
 if __name__ == '__main__':
-    clone_url = sys.argv[1]
-    branch = sys.argv[2]
+    clone_url = os.environ['CLONE_URL']
+    branch = os.environ['BRANCH_NAME']
     os.system(f"git clone --depth=1 --branch={branch} {clone_url} repo")
     os.chdir('repo')
     for filename in os.listdir('.'):
