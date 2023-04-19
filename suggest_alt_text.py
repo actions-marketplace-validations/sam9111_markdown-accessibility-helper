@@ -2,7 +2,6 @@ import os
 import re
 import requests
 import json
-import sys
 
 def suggest_alt_text(image_url,language='en'):
     subscription_key = os.environ.get('AZURE_SUBSCRIPTION_KEY')
@@ -31,11 +30,8 @@ def update_markdown_file(file_path):
         f.write(content)
 
 if __name__ == '__main__':
-    clone_url = sys.argv[1]
-    if len(sys.argv) > 2:
-        branch = sys.argv[2]
-    else:
-        branch = 'main'
+    clone_url = os.environ.get('GITHUB_REPOSITORY_URL')
+    branch = os.environ.get('GITHUB_HEAD_REF')
     os.system(f"git clone --depth=1 --branch={branch} {clone_url} repo")
     os.chdir('repo')
     for filename in os.listdir('.'):
