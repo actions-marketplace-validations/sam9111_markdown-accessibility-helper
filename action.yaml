@@ -1,0 +1,36 @@
+name: Markdown Accessibility Helper
+
+on:
+  pull_request:
+    paths:
+      - '**/*.md'
+    types: [opened, synchronize]
+  push:
+    branches:
+      - main
+    paths:
+      - '**/*.md'
+
+jobs:
+  suggest_alt_text:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install Python
+        uses: actions/setup-python@v2
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Suggest Alt Text
+        env: 
+          CLONE_URL: ${{ github.event.pull_request.head.repo.clone_url }}
+          BRANCH: ${{ github.event.pull_request.head.ref }}
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          AZURE_SUBSCRIPTION_KEY: ${{ secrets.AZURE_SUBSCRIPTION_KEY }}
+          AZURE_ENDPOINT: ${{ secrets.AZURE_ENDPOINT }}
+          ALT_LANGUAGE: ${{ vars.ALT_LANGUAGE }}
+        run: python suggest_alt_text.py
