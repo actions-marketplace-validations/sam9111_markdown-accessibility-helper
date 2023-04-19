@@ -1,5 +1,6 @@
 name: Markdown Accessibility Helper
 
+# action runs when a pull request is opened or updated or when a push is made to the main branch
 on:
   pull_request:
     paths:
@@ -30,7 +31,12 @@ jobs:
           BRANCH: ${{ github.event.pull_request.head.ref }}
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+          # these are the repository secrets you need to set in your repo
           AZURE_SUBSCRIPTION_KEY: ${{ secrets.AZURE_SUBSCRIPTION_KEY }}
           AZURE_ENDPOINT: ${{ secrets.AZURE_ENDPOINT }}
+          # this is the language you want to use for the alt text and is optional
+          # if not set, the default is English
+          # Set it as a repository variable
           ALT_LANGUAGE: ${{ vars.ALT_LANGUAGE }}
         run: python suggest_alt_text.py
